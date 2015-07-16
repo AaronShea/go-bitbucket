@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"github.com/bitly/go-simplejson"
+	"strings"
 )
 
 // Bitbucket POSTs to the service URL you specify. The service
@@ -234,9 +236,45 @@ type File struct {
 
 func ParseHook(raw []byte) (*PostReceiveHook, error) {
 	hook := PostReceiveHook{}
-	if err := json.Unmarshal(raw, &hook); err != nil {
+
+	// Parse raw body into SimpleJSON
+	js, err := simplejson.NewJson(raw)
+
+	if err != nil {
 		return nil, err
 	}
+
+	// Let's parse the repo
+	repo := Repo{}
+	repo.Name, _ = js.Get("repository").Get("name").String()
+	repo.Name = strings.Replace(strings.ToLower(repo.Name), " ", "-", -1)
+	repo.Slug = repo.Name
+	repo.Owner, _ = js.Get("repository").Get("owner").Get("username").String()
+	repo.Scm = "git"
+
+	// Set our repo in the hook
+	hook.Repo = &repo
+
+	// Parse commits
+	changes := js.Get("push").Get("changes")
+	for index,_ := range changes.MustArray() {
+
+		tempCommit := Commit{}
+		thisChange := changes.GetIndex(index).Get("new")
+		tempCommit.Message, _ = thisChange.Get("target").Get("message").String()
+		tempCommit.Author, _ = thisChange.Get("target").Get("author").Get("user").Get("username").String()
+		tempCommit.RawAuthor, _ = thisChange.Get("target").Get("author").Get("raw").String()
+		tempCommit.Branch, _ = thisChange.Get("name").String()
+		tempCommit.Hash, _ = thisChange.Get("target").Get("hash").String()
+
+		// Append to the commit hooks
+		hook.Commits = append(hook.Commits, &tempCommit)
+
+	}
+
+	// Final hook setup
+	hook.User, _ = js.Get("actor").Get("username").String()
+	hook.Url, _ = js.Get("repository").Get("link").Get("html").Get("href").String()
 
 	// it is possible the JSON was parsed, however,
 	// was not from Bitbucket (maybe was from Google Code)
