@@ -31,7 +31,7 @@ type UserResource struct {
 // of all its repositories both public and private.
 func (r *UserResource) Current() (*Account, error) {
 	user := Account{}
-	if err := r.client.do("GET", "/user", nil, nil, &user); err != nil {
+	if err := r.client.do("GET", "/1.0/user", nil, nil, &user); err != nil {
 		return nil, err
 	}
 
@@ -42,7 +42,7 @@ func (r *UserResource) Current() (*Account, error) {
 // account.
 func (r *UserResource) Find(username string) (*Account, error) {
 	user := Account{}
-	path := fmt.Sprintf("/users/%s", username)
+	path := fmt.Sprintf("/1.0/users/%s", username)
 
 	if err := r.client.do("GET", path, nil, nil, &user); err != nil {
 		return nil, err

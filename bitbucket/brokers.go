@@ -53,7 +53,7 @@ type BrokerResource struct {
 
 func (r *BrokerResource) List(owner, slug string) ([]*Broker, error) {
 	brokers := []*Broker{}
-	path := fmt.Sprintf("/repositories/%s/%s/services", owner, slug)
+	path := fmt.Sprintf("/1.0/repositories/%s/%s/services", owner, slug)
 
 	if err := r.client.do("GET", path, nil, nil, &brokers); err != nil {
 		return nil, err
@@ -64,7 +64,7 @@ func (r *BrokerResource) List(owner, slug string) ([]*Broker, error) {
 
 func (r *BrokerResource) Find(owner, slug string, id int) (*Broker, error) {
 	brokers := []*Broker{}
-	path := fmt.Sprintf("/repositories/%s/%s/services/%v", owner, slug, id)
+	path := fmt.Sprintf("/1.0/repositories/%s/%s/services/%v", owner, slug, id)
 
 	if err := r.client.do("GET", path, nil, nil, &brokers); err != nil {
 		return nil, err
@@ -124,7 +124,7 @@ func (r *BrokerResource) Create(owner, slug, link, brokerType string) (*Broker, 
 	}
 
 	b := Broker{}
-	path := fmt.Sprintf("/repositories/%s/%s/services", owner, slug)
+	path := fmt.Sprintf("/1.0/repositories/%s/%s/services", owner, slug)
 	if err := r.client.do("POST", path, nil, values, &b); err != nil {
 		return nil, err
 	}
@@ -143,7 +143,7 @@ func (r *BrokerResource) Update(owner, slug, link, brokerType string, id int) (*
 	}
 
 	b := Broker{}
-	path := fmt.Sprintf("/repositories/%s/%s/services/%v", owner, slug, id)
+	path := fmt.Sprintf("/1.0/repositories/%s/%s/services/%v", owner, slug, id)
 	if err := r.client.do("PUT", path, nil, values, &b); err != nil {
 		return nil, err
 	}
@@ -165,7 +165,7 @@ func (r *BrokerResource) CreateUpdate(owner, slug, link, brokerType string) (*Br
 }
 
 func (r *BrokerResource) Delete(owner, slug string, id int) error {
-	path := fmt.Sprintf("/repositories/%s/%s/services/%v", owner, slug, id)
+	path := fmt.Sprintf("/1.0/repositories/%s/%s/services/%v", owner, slug, id)
 	return r.client.do("DELETE", path, nil, nil, nil)
 }
 
@@ -184,7 +184,7 @@ func (r *BrokerResource) GetPatch(owner, slug string, id int) (string, error) {
 	// uri, err := url.Parse("https://api.bitbucket.org/1.0" + path)
 	// https://bitbucket.org/!api/2.0/repositories/tdburke/test_mymysql/pullrequests/1/patch
 
-	path := fmt.Sprintf("/repositories/tdburke/test_mymysql/pullrequests/1/patch")
+	path := fmt.Sprintf("/1.0/repositories/tdburke/test_mymysql/pullrequests/1/patch")
 
 	fmt.Println(path)
 

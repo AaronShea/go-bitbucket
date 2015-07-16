@@ -23,7 +23,7 @@ type KeyResource struct {
 // This call requires authentication.
 func (r *KeyResource) List(account string) ([]*Key, error) {
 	keys := []*Key{}
-	path := fmt.Sprintf("/users/%s/ssh-keys", account)
+	path := fmt.Sprintf("/1.0/users/%s/ssh-keys", account)
 
 	if err := r.client.do("GET", path, nil, nil, &keys); err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func (r *KeyResource) List(account string) ([]*Key, error) {
 // This call requires authentication.
 func (r *KeyResource) Find(account string, id int) (*Key, error) {
 	key := Key{}
-	path := fmt.Sprintf("/users/%s/ssh-keys/%v", account, id)
+	path := fmt.Sprintf("/1.0/users/%s/ssh-keys/%v", account, id)
 	if err := r.client.do("GET", path, nil, nil, &key); err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (r *KeyResource) Create(account, key, label string) (*Key, error) {
 	values.Add("label", label)
 
 	k := Key{}
-	path := fmt.Sprintf("/users/%s/ssh-keys", account)
+	path := fmt.Sprintf("/1.0/users/%s/ssh-keys", account)
 	if err := r.client.do("POST", path, nil, values, &k); err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (r *KeyResource) Update(account, key, label string, id int) (*Key, error) {
 	values.Add("label", label)
 
 	k := Key{}
-	path := fmt.Sprintf("/users/%s/ssh-keys/%v", account, id)
+	path := fmt.Sprintf("/1.0/users/%s/ssh-keys/%v", account, id)
 	if err := r.client.do("PUT", path, nil, values, &k); err != nil {
 		return nil, err
 	}
@@ -113,6 +113,6 @@ func (r *KeyResource) CreateUpdate(account, key, label string) (*Key, error) {
 // Deletes the key specified by the key_id value.
 // This call requires authentication
 func (r *KeyResource) Delete(account string, id int) error {
-	path := fmt.Sprintf("/users/%s/ssh-keys/%v", account, id)
+	path := fmt.Sprintf("/1.0/users/%s/ssh-keys/%v", account, id)
 	return r.client.do("DELETE", path, nil, nil, nil)
 }

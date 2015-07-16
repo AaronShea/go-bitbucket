@@ -22,7 +22,7 @@ type SourceResource struct {
 // Gets information about an individual file in a repository
 func (r *SourceResource) Find(owner, slug, revision, path string) (*Source, error) {
 	src := Source{}
-	url_path := fmt.Sprintf("/repositories/%s/%s/src/%s/%s", owner, slug, revision, path)
+	url_path := fmt.Sprintf("/1.0/repositories/%s/%s/src/%s/%s", owner, slug, revision, path)
 
 	if err := r.client.do("GET", url_path, nil, nil, &src); err != nil {
 		return nil, err
@@ -34,7 +34,7 @@ func (r *SourceResource) Find(owner, slug, revision, path string) (*Source, erro
 // Gets a list of the src in a repository.
 func (r *SourceResource) List(owner, slug, revision, path string) ([]*Source, error) {
 	src := []*Source{}
-	url_path := fmt.Sprintf("/repositories/%s/%s/src/%s/%s", owner, slug, revision, path)
+	url_path := fmt.Sprintf("/1.0/repositories/%s/%s/src/%s/%s", owner, slug, revision, path)
 	if err := r.client.do("GET", url_path, nil, nil, &src); err != nil {
 		return nil, err
 	}

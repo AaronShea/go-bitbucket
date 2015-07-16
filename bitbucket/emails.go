@@ -28,7 +28,7 @@ type Email struct {
 // authentication.
 func (r *EmailResource) List(account string) ([]*Email, error) {
 	emails := []*Email{}
-	path := fmt.Sprintf("/users/%s/emails", account)
+	path := fmt.Sprintf("/1.0/users/%s/emails", account)
 
 	if err := r.client.do("GET", path, nil, nil, &emails); err != nil {
 		return nil, err
@@ -41,7 +41,7 @@ func (r *EmailResource) List(account string) ([]*Email, error) {
 // This call requires authentication.
 func (r *EmailResource) Find(account, address string) (*Email, error) {
 	email := Email{}
-	path := fmt.Sprintf("/users/%s/emails/%s", account, address)
+	path := fmt.Sprintf("/1.0/users/%s/emails/%s", account, address)
 
 	if err := r.client.do("GET", path, nil, nil, &email); err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (r *EmailResource) Create(account, address string) (*Email, error) {
 	values.Add("email", address)
 
 	e := Email{}
-	path := fmt.Sprintf("/users/%s/emails/%s", account, address)
+	path := fmt.Sprintf("/1.0/users/%s/emails/%s", account, address)
 	if err := r.client.do("POST", path, nil, values, &e); err != nil {
 		return nil, err
 	}

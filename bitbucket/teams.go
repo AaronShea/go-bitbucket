@@ -36,7 +36,7 @@ func (r *TeamResource) List() ([]*Team, error) {
 	data.Teams = map[string]string{}
 	teams := []*Team{}
 
-	if err := r.client.do("GET", "/user/privileges", nil, nil, &data); err != nil {
+	if err := r.client.do("GET", "/1.0/user/privileges", nil, nil, &data); err != nil {
 		return nil, err
 	}
 

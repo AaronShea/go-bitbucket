@@ -38,7 +38,7 @@ type RepoResource struct {
 // Gets the repositories owned by the individual or team account.
 func (r *RepoResource) List() ([]*Repo, error) {
 	repos := []*Repo{}
-	const path = "/user/repositories"
+	const path = "/1.0/user/repositories"
 
 	if err := r.client.do("GET", path, nil, nil, &repos); err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (r *RepoResource) List() ([]*Repo, error) {
 // Gets the repositories list from the account's dashboard.
 func (r *RepoResource) ListDashboard() ([]*Account, error) {
 	var m [][]interface{}
-	const path = "/user/repositories/dashboard"
+	const path = "/1.0/user/repositories/dashboard"
 
 	if err := r.client.do("GET", path, nil, nil, &m); err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func (r *RepoResource) ListDashboardRepos() ([]*Repo, error) {
 // Gets the list of Branches for the repository
 func (r *RepoResource) ListBranches(owner, slug string) ([]*Branch, error) {
 	branchMap := map[string]*Branch{}
-	path := fmt.Sprintf("/repositories/%s/%s/branches", owner, slug)
+	path := fmt.Sprintf("/1.0/repositories/%s/%s/branches", owner, slug)
 
 	if err := r.client.do("GET", path, nil, nil, &branchMap); err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (r *RepoResource) ListBranches(owner, slug string) ([]*Branch, error) {
 // Gets the repositories list for the named user.
 func (r *RepoResource) ListUser(owner string) ([]*Repo, error) {
 	repos := []*Repo{}
-	path := fmt.Sprintf("/repositories/%s", owner)
+	path := fmt.Sprintf("/1.0/repositories/%s", owner)
 
 	if err := r.client.do("GET", path, nil, nil, &repos); err != nil {
 		return nil, err

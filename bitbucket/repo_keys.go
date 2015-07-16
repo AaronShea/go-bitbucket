@@ -17,7 +17,7 @@ type RepoKeyResource struct {
 // Gets a list of the keys associated with a repository.
 func (r *RepoKeyResource) List(owner, slug string) ([]*Key, error) {
 	keys := []*Key{}
-	path := fmt.Sprintf("/repositories/%s/%s/deploy-keys", owner, slug)
+	path := fmt.Sprintf("/1.0/repositories/%s/%s/deploy-keys", owner, slug)
 
 	if err := r.client.do("GET", path, nil, nil, &keys); err != nil {
 		return nil, err
@@ -30,7 +30,7 @@ func (r *RepoKeyResource) List(owner, slug string) ([]*Key, error) {
 // This call requires authentication.
 func (r *RepoKeyResource) Find(owner, slug string, id int) (*Key, error) {
 	key := Key{}
-	path := fmt.Sprintf("/repositories/%s/%s/deploy-keys/%v", owner, slug, id)
+	path := fmt.Sprintf("/1.0/repositories/%s/%s/deploy-keys/%v", owner, slug, id)
 	if err := r.client.do("GET", path, nil, nil, &key); err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (r *RepoKeyResource) Create(owner, slug, key, label string) (*Key, error) {
 	values.Add("label", label)
 
 	k := Key{}
-	path := fmt.Sprintf("/repositories/%s/%s/deploy-keys", owner, slug)
+	path := fmt.Sprintf("/1.0/repositories/%s/%s/deploy-keys", owner, slug)
 	if err := r.client.do("POST", path, nil, values, &k); err != nil {
 		return nil, err
 	}
@@ -98,7 +98,7 @@ func (r *RepoKeyResource) CreateUpdate(owner, slug, key, label string) (*Key, er
 // Deletes the key specified by the key_id value.
 // This call requires authentication
 func (r *RepoKeyResource) Delete(owner, slug string, id int) error {
-	path := fmt.Sprintf("/repositories/%s/%s/deploy-keys/%v", owner, slug, id)
+	path := fmt.Sprintf("/1.0/repositories/%s/%s/deploy-keys/%v", owner, slug, id)
 	return r.client.do("DELETE", path, nil, nil, nil)
 }
 
